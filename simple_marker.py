@@ -1,4 +1,5 @@
 import sublime, sublime_plugin
+import re
 
 SETTING_FILE_NAME = "SimpleMarker.sublime-settings"
 
@@ -61,6 +62,7 @@ class SimpleMarkerCommand(sublime_plugin.TextCommand, SimpleMarkerSetting):
 
     def new_marker(self):
         initial_text = self.view.substr(self.view.sel()[0]).strip()
+        initial_text = re.sub(r"""([^0-9A-Za-z \n'!@#%&:;<>=_-])""", r"\\\1", initial_text)
         self.window.show_input_panel('New marker', initial_text, self.add_marker, None, None)
 
     def list(self):
